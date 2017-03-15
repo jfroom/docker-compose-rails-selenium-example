@@ -1,11 +1,11 @@
 # docker-compose-rails-selenium [![Build Status](https://travis-ci.org/jfroom/docker-compose-rails-selenium.svg?branch=master)](https://travis-ci.org/jfroom/docker-compose-rails-selenium)
 
-Project demo utilizing Docker Compose 3 for: 
+Just a few Docker Compose 3 techniques for integrating:
 - Rails 5.0 development & Travis CI tests
 - Caching of bundler gems into a Docker volume which persists across builds and Gemfile changes
 - A Selenium Chrome standalone instance running Capybara tests, and a VNC connection to interact with the test browser session
 
-The insights I've covering here took me a while to grasp — so I'm sharing in case someone else finds it useful.
+These insights took a while to grasp — so I'm sharing in case someone else finds it useful.
 
 New to Docker & Rails? Unfamiliar with the issues surrounding the topics above? Start with the links in [References](#references).
 
@@ -21,8 +21,8 @@ New to Docker & Rails? Unfamiliar with the issues surrounding the topics above? 
 
 # Rails app
 
-This base Rails app is very simple. 
-- Was setup with `rails new app --skip-active-record`. The database was skipped to keep the demo slim.
+This base Rails app is very simple since the focus here is on docker. 
+- Was setup with `rails new app --skip-active-record`. The database was skipped to stay lightweight.
 - It has one root path route to the WelcomeController which renders "Hello World!" from `views/welcome/index.html.erb`
 
 # Basic Docker Commands
@@ -51,7 +51,7 @@ This base Rails app is very simple.
 
 `Dockerfile`:
 - `ENTRYPOINT ["/docker-entrypoint.sh"]` allows a shell script to run before any relative containers execute a command.
-- `ENV BUNDLE_PATH=/bundle BUNDLE_BIN=/bundle/bin GEM_HOME=/bundle` configures a new installation path for future bundler installs.
+- `ENV BUNDLE_PATH=/bundle BUNDLE_BIN=/bundle/bin GEM_HOME=/bundle` configures a new installation path for future bundler installs, and binstubs.
 - `ENV PATH="${BUNDLE_BIN}:${PATH}"` allows bundler's binstubs to be executed without `bundle exec` (i.e. `puma`)
 
 `docker-entrypoint.sh`:
@@ -61,14 +61,20 @@ This base Rails app is very simple.
 
 `docker-compose.yml`:
 - `version: '3.1'` Volume syntax changed a bit between 2 and 3 (volume_from was removed)
-- 'services:web:volumes:' defines `bundle_cache:/bundle` and then `volumes:bundle_cache` persists it across builds. **This reduces build times for local development.** 
-- When installing a new gem, or changing branches which have different gems — just stop the docker services and restart it. Or execute 'bundle install' on the container. The old gems are already cached and new gems will be installed.
+- `services:web:volumes:` defines `bundle_cache:/bundle`, and then `volumes:bundle_cache` persists it across builds. **This reduces build times for local development. :tada:** 
+- When installing a new gem, or changing branches which have different gems — just stop the docker services and restart it. Or execute `bundle install` on the container. The old gems are already cached, and only new gems will be installed.
 
 ## Docker & Rails
 
-`docker-compose.yml` has a muliline `services:web:command` that starts the develoment (port 3000) & test (port 3001) servers. We could move that into a script file, but I sort of like having less files to chase down. Running two servers with Puma to make it easier to run CI, and debug the test environment (in my humble opinion).
+`docker-compose.yml`
+- Has a muliline `services:web:command` that starts the develoment (port 3000) & test (port 3001) servers. 
+This could move that into a script file, but I like having a flatter architecture and less files to chase down.
+- Runs dedicated test server which is bound to the test database to debug the test environment, and fewer differences between dev & CI environments.
 
-`docker-compose.override.yml` exposes web ports to host machine so you can visit 'http://localhost:3000' for development server, and 'http://localhost:3001' for test server. This file is automatically used during a standard 'docker-compose up'. See Travis CI section for why the ports had to be split out into an override file.
+`docker-compose.override.yml`
+- Exposes web ports to host machine so you can visit 'http://localhost:3000' for development server, and 'http://localhost:3001' for test server. 
+- This file is automatically used during a standard `docker-compose up`. 
+- See Travis CI section for why the ports had to be split out into an override file.
 
 ## Docker & Selenium
 
@@ -76,18 +82,20 @@ This base Rails app is very simple.
 - Has `selenium-webdriver` and `minitest-rails-capybara` in the `:test` group.
 
 `docker-compose.yml`
-  - Defines `services:selenium` with the `selenium/standalone-chrome-debug` image
-  - The VNC ability included with the debug is really useful for debugging (see commands section).
-  - Defines several enviornment variables which help link Capybara to the Docker network: `SELENIUM_HOST SELENIUM_PORT TEST_APP_HOST TEST_PORT`
+- Defines `services:selenium` with the `selenium/standalone-chrome-debug` image
+- The VNC service included with the debug is really useful for debugging (see commands section).
+- Defines several enviornment variables which help link Capybara to the Docker network: `SELENIUM_HOST SELENIUM_PORT TEST_APP_HOST TEST_PORT`
 
-`test/test_helper.rb` uses these env variables in the Capybara configuration.
+`test/test_helper.rb`
+- Uses the env variables defined above in the Capybara configuration.
 
-`test/acceptance/welcome_page_test.rb` shows a simple test case to visit the root path, and confirm 'Hello World!' is rendered.
+`test/acceptance/welcome_page_test.rb`
+Shows a simple test case to visit the root path, and confirms **'Hello World!'** is rendered.
 
 ## Docker & Travis CI
 
-'docker-compose.ci.yml' 
-- Configures ports that are only exposed to the Docker network — not to the host machine. Travis was blocking some of the external ports. 
+`docker-compose.ci.yml`
+- Configures ports that are only exposed to the Docker network — not to the host machine. Travis was blocking some of the external ports.  
 - This override file is executed in `.travis.yml` as: `docker-compose -f docker-compose.yml -f docker-compose.ci.yml up`
 
 # Refrences
@@ -102,11 +110,11 @@ Docker & Bundler:
 
 Docker & Selenium:
 - [Dockerized Rails Capybara Tests On Top Of Selenium](http://www.alfredo.motta.name/dockerized-rails-capybara-tests-on-top-of-selenium/) (Alfredo Motta)
-- [Docker container for running browser tests](https://medium.com/@georgediaz/docker-container-for-running-browser-tests-9b234e68f83c#.r0y2gwkns) (George Diaz)
+- [Docker container for running browser tests](https://medium.com/@georgediaz/docker-container-for-running-browser-tests-9b234e68f83c) (George Diaz)
 
 Docker & Travis:
-- [https://docs.travis-ci.com/user/docker/](Travis: Using Docker in Builds) (TravisCI)
-- [https://graysonkoonce.com/managing-docker-and-docker-compose-versions-on-travis-ci/](Managing Docker & Docker Compose versions on Travis) (Grayson Koonce)
+- [Travis - Using Docker in Builds](https://docs.travis-ci.com/user/docker/) (TravisCI)
+- [Managing Docker & Docker Compose versions on Travis](https://graysonkoonce.com/managing-docker-and-docker-compose-versions-on-travis-ci/) (Grayson Koonce)
 
 # License
 Copyright © JFMK, LLC Released under the [MIT License](https://github.com/jfroom/docker-compose-rails-selenium/blob/master/LICENSE).
