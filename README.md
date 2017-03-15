@@ -66,15 +66,12 @@ This base Rails app is very simple since the focus here is on docker.
 
 ## Docker & Rails
 
-`docker-compose.yml`
-- Has a muliline `services:web:command` that starts the develoment (port 3000) & test (port 3001) servers. 
-This could move that into a script file, but I like having a flatter architecture and less files to chase down.
-- Runs dedicated test server which is bound to the test database to debug the test environment, and fewer differences between dev & CI environments.
-
 `docker-compose.override.yml`
-- Exposes web ports to host machine so you can visit 'http://localhost:3000' for development server, and 'http://localhost:3001' for test server. 
 - This file is automatically used during a standard `docker-compose up`. 
-- See Travis CI section for why the ports had to be split out into an override file.
+- Has a muliline `services:web:command` that starts the development (port 3000) & test (port 3001) servers. This could move that into a script file, but I like having a flatter architecture, and there's one less file to chase down.
+- Runs dedicated test server which is bound to the test database to debug the test environment, and fewer differences between dev & CI environments.
+- Exposes web ports to host machine so you can visit 'http://localhost:3000' for development server, and 'http://localhost:3001' for test server. 
+- See Travis CI section for why the command and ports had to be split out into an override file (vs. just putting directly into the `docker-compose.yml` file.
 
 ## Docker & Selenium
 
@@ -95,8 +92,9 @@ Shows a simple test case to visit the root path, and confirms **'Hello World!'**
 ## Docker & Travis CI
 
 `docker-compose.ci.yml`
+- Command launches the test server.
 - Configures ports that are only exposed to the Docker network — not to the host machine. Travis was blocking some of the external ports.  
-- This override file is executed in `.travis.yml` as: `docker-compose -f docker-compose.yml -f docker-compose.ci.yml up`
+- This override file is executed in `.travis.yml` as: `docker-compose -f docker-compose.yml -f docker-compose.ci.yml up -d`
 
 # References
 New to Docker & Rails? Unfamiliar with the issues surrounding the topics above? Start here. Much of this repo is an derivative & build upon the content of these quality resources:

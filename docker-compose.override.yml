@@ -2,6 +2,14 @@ version: '3.1'
 
 services:
   web:
+    command: >
+      bash -c "
+        # Run test server detached
+        RAILS_ENV=test puma -b tcp://0.0.0.0:3001 -d &&
+        
+        # Run web server
+        puma -C config/puma.rb
+        "
     ports: ['3000:3000', '3001:3001']
 
   selenium:

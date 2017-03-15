@@ -2,7 +2,12 @@ version: '3.1'
 
 services:
   web:
-    expose: [3000, 3001]
+    command: >
+      bash -c "
+        # Run test server
+        RAILS_ENV=test puma -b tcp://0.0.0.0:3001
+        "
+    expose: [3001]
 
   selenium:
     expose: [4444, 5900]
