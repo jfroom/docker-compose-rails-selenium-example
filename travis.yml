@@ -1,0 +1,44 @@
+language: ruby
+
+services:
+  - docker
+
+env:
+  global:
+    - DOCKER_VERSION=17.03.0~ce-0~ubuntu-trusty
+    - DOCKER_COMPOSE_VERSION=1.11.2
+
+before_install:
+  - # Once travis pre-installs newer versions of docker & docker compose, the following can be removed
+  - # However, saves a lot of complexity by starting with their docker services configured & then calling these updates.
+  - docker -v
+  - docker-compose -v
+  - # List docker-engine versions
+  - apt-cache madison docker-engine
+  - # Update docker
+  - sudo apt-get install docker-engine=${DOCKER_VERSION}
+  - docker -v
+  - docker-compose -v
+
+  - # Update docker compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  - docker-compose -v
+
+install:
+  - docker-compose build
+
+before_script:
+  - docker-compose run --rm --no-deps web echo 'Gems now pre-installed.'
+  - # Use 'run ...` instead of 'exec ...` so that entrypoint's customized bundle install runs completely.
+  - docker-compose -f docker-compose.yml -f docker-compose.ci.yml up -d
+  - # The detached `up` also runs entrypoint — but because it's detached,
+  - # bundle install doesn't finish before shell moves on to next commands.
+  - docker ps
+
+script:
+  - docker-compose exec web rails test
+
+after_script:
+  - docker-compose down

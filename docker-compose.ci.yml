@@ -1,0 +1,8 @@
+version: '3.1'
+
+services:
+  web:
+    expose: [3000, 3001]
+
+  selenium:
+    expose: [4444, 5900]

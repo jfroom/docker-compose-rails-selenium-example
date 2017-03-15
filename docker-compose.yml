@@ -1,0 +1,33 @@
+version: '3.1'
+
+services:
+  web:
+    build: .
+    command: >
+      bash -c "
+        # Run test server detached
+        RAILS_ENV=test puma -b tcp://0.0.0.0:3001 -d &&
+        
+        # Run web server
+        puma -C config/puma.rb
+        "
+    environment: 
+      - SELENIUM_HOST=selenium
+      - SELENIUM_PORT=4444
+      - TEST_APP_HOST=web
+      - TEST_PORT=3001
+    volumes:
+      - bundle_cache:/bundle
+      - .:/app
+    stdin_open: true
+    tty: true
+    
+  selenium:
+    image: selenium/standalone-chrome-debug:3.0.1-germanium
+    logging:
+      driver: none
+    stdin_open: true
+    tty: true
+
+volumes:
+  bundle_cache:
