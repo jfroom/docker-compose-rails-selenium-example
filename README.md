@@ -1,4 +1,4 @@
-#docker-compose-rails-selenium
+# docker-compose-rails-selenium
 
 [![Build Status](https://travis-ci.org/jfroom/docker-compose-rails-selenium.svg?branch=master)](https://travis-ci.org/jfroom/docker-compose-rails-selenium)
 
