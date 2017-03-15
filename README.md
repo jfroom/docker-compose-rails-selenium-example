@@ -1,8 +1,5 @@
-# docker-compose-rails-selenium
+# docker-compose-rails-selenium [![Build Status](https://travis-ci.org/jfroom/docker-compose-rails-selenium.svg?branch=master)](https://travis-ci.org/jfroom/docker-compose-rails-selenium)
 
-[![Build Status](https://travis-ci.org/jfroom/docker-compose-rails-selenium.svg?branch=master)](https://travis-ci.org/jfroom/docker-compose-rails-selenium)
-
-# Overview
 Demo project showing how to: 
 - Use Docker Compose 3 for both: local Rails development & Travis CI tests
 - Cache bundler gems into a Docker volume which can persist across builds (save time)
@@ -10,7 +7,7 @@ Demo project showing how to:
 
 The insights I've covering here took me a while to grasp — so I'm sharing in case someone else finds it useful.
 
-New to Docker & Rails? Or the issues surrounding the topics above? Start with the links in [References](#references).
+New to Docker & Rails? Unfamiliar with the issues surrounding the topics above? Start with the links in [References](#references).
 
 # Getting started
 
@@ -20,15 +17,13 @@ New to Docker & Rails? Or the issues surrounding the topics above? Start with th
 2. Verify versions: `docker -v; docker-compose -v;`
 
 ## Recommended
-2. Install [VNC Viewer](https://www.realvnc.com/download/viewer/) to view & interact with selenium sessions that would otherwise be headless.
-
+1. Install [VNC Viewer](https://www.realvnc.com/download/viewer/) to view & interact with selenium sessions that would otherwise be headless.
 
 # Rails app
 
 This base Rails app is very simple. 
-- Was setup with `rails new app --skip-active-record`. I skipped the database setup to keep this demo slim.
-- It has one root path route to the welcome controller which has a "Hello World!" in `views/welcome/index.html.erb`
-
+- Was setup with `rails new app --skip-active-record`. The database was skipped to keep the demo slim.
+- It has one root path route to the WelcomeController which renders "Hello World!" from `views/welcome/index.html.erb`
 
 # Basic Docker Commands
 
@@ -96,7 +91,7 @@ This base Rails app is very simple.
 - This override file is executed in `.travis.yml` as: `docker-compose -f docker-compose.yml -f docker-compose.ci.yml up`
 
 # Refrences
-New to Docker & Rails? Or the issues surrounding the topics above? Start here. Much of this repo is an derivative of these links:
+New to Docker & Rails? Unfamiliar with the issues surrounding the topics above? Start here. Much of this repo is an derivative & build upon the content of these quality resources:
 
 Docker & Rails:
 - [Dockerize a Rails 5, Postgres, Redis, Sidekiq and Action Cable Application with Docker Compose](https://nickjanetakis.com/blog/dockerize-a-rails-5-postgres-redis-sidekiq-action-cable-app-with-docker-compose) (Nick Janetakis)
