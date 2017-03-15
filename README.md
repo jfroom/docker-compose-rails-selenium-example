@@ -107,3 +107,6 @@ Docker & Selenium:
 Docker & Travis:
 - [https://docs.travis-ci.com/user/docker/](Travis: Using Docker in Builds) (TravisCI)
 - [https://graysonkoonce.com/managing-docker-and-docker-compose-versions-on-travis-ci/](Managing Docker & Docker Compose versions on Travis) (Grayson Koonce)
+
+# License
+Copyright © JFMK, LLC Released under the [MIT License](https://github.com/jfroom/docker-compose-rails-selenium/blob/master/LICENSE).
