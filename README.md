@@ -1,4 +1,4 @@
-# docker-compose-rails-selenium [![Build Status](https://travis-ci.org/jfroom/docker-compose-rails-selenium.svg?branch=master)](https://travis-ci.org/jfroom/docker-compose-rails-selenium)
+# docker-compose-rails-selenium-example [![Build Status](https://travis-ci.org/jfroom/docker-compose-rails-selenium-example.svg?branch=master)](https://travis-ci.org/jfroom/docker-compose-rails-selenium-example)
 
 Just a few Docker Compose 3 techniques for integrating:
 - Rails 5.0 development & Travis CI tests
