@@ -1,9 +1,9 @@
 # docker-compose-rails-selenium [![Build Status](https://travis-ci.org/jfroom/docker-compose-rails-selenium.svg?branch=master)](https://travis-ci.org/jfroom/docker-compose-rails-selenium)
 
-Demo project showing how to: 
-- Use Docker Compose 3 for both: local Rails development & Travis CI tests
-- Cache bundler gems into a Docker volume which can persist across builds (save time)
-- Configure a Selenium standalone instance with Capaybara for acceptance tests
+Project demo utilizing Docker Compose 3 for: 
+- Rails 5.0 development & Travis CI tests
+- Caching of bundler gems into a Docker volume which persists across builds and Gemfile changes
+- A Selenium Chrome standalone instance running Capybara tests, and a VNC connection to interact with the test browser session
 
 The insights I've covering here took me a while to grasp — so I'm sharing in case someone else finds it useful.
 
