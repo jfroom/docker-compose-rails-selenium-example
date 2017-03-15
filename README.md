@@ -98,7 +98,7 @@ Shows a simple test case to visit the root path, and confirms **'Hello World!'**
 - Configures ports that are only exposed to the Docker network — not to the host machine. Travis was blocking some of the external ports.  
 - This override file is executed in `.travis.yml` as: `docker-compose -f docker-compose.yml -f docker-compose.ci.yml up`
 
-# Refrences
+# References
 New to Docker & Rails? Unfamiliar with the issues surrounding the topics above? Start here. Much of this repo is an derivative & build upon the content of these quality resources:
 
 Docker & Rails:
