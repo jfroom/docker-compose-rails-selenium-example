@@ -1,3 +1,7 @@
+#docker-compose-rails-selenium
+
+[![Build Status](https://travis-ci.org/jfroom/docker-compose-rails-selenium.svg?branch=master)](https://travis-ci.org/jfroom/docker-compose-rails-selenium)
+
 # Overview
 Demo project showing how to: 
 - Use Docker Compose 3 for both: local Rails development & Travis CI tests
