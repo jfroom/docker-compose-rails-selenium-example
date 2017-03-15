@@ -41,7 +41,7 @@ This base Rails app is very simple since the focus here is on docker.
 
 `docker compose test` Ensure the services are already 'up' in another terminal, or in detached mode, before running tests.
 
-`vnc://localhost:5900 password:secret` To interactive with and debug Selenium sessions, use VNC to connect to the Selenium service. [VNC Viewer](https://www.realvnc.com/download/viewer/) works well, and on OS X Screen Sharing app is built-in.
+`vnc://localhost:5900 password:secret` To watch the selenium tests run, use VNC to connect to the Selenium service. [VNC Viewer](https://www.realvnc.com/download/viewer/) works well, and on OS X Screen Sharing app is built-in. To interact and debug a browser session, add `byebug` into the test to stop the driver.
 
 # Docker Setup
 
