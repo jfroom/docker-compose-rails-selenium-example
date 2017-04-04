@@ -29,17 +29,17 @@ This base Rails app is very simple since the focus here is on docker.
 
 ### First run
 
-`docker-commpose build`
+`docker-compose build` Builds images.
 
 ### Run
 
-`docker-compose up` Will install all the gems, and launch the web server.
+`docker-compose up` Installs gems, launches web server.
 
 `open http://localhost:3000` Once the server is up, the root page can be seen on your local machine.
 
 ### Test
 
-`docker compose test` Ensure the services are already 'up' in another terminal, or in detached mode, before running tests.
+`docker-compose test` Ensure the services are already 'up' in another terminal, or in detached mode, before running tests.
 
 `vnc://localhost:5900 password:secret` To watch the selenium tests run, use VNC to connect to the Selenium service. [VNC Viewer](https://www.realvnc.com/download/viewer/) works well, and on OS X Screen Sharing app is built-in. To interact and debug a browser session, add `byebug` into the test to stop the driver.
 
