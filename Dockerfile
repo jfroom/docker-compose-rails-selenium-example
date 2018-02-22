@@ -1,4 +1,4 @@
-FROM ruby:2.3-slim
+FROM ruby:2.3.6-slim
 
 RUN apt-get update && apt-get install -qq -y --no-install-recommends \
       build-essential nodejs
